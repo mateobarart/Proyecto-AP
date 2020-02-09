@@ -1,0 +1,46 @@
+﻿@model MVC.Models.Usuario
+
+@{
+    ViewBag.Title = "Eliminar usuario";
+}
+
+<h2 class="text-center">Eliminar</h2>
+
+<h3 class="text-center">¿Está seguro que desea eliminar el usuario?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NombreUsuario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreUsuario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoUsuario)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TipoUsuario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Mail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Mail)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver al listado", "Index")
+        </div>
+    }
+</div>

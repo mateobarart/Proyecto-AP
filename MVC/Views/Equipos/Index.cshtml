@@ -1,0 +1,54 @@
+﻿@model IEnumerable<MVC.Models.Equipo>
+
+@{
+    ViewBag.Title = "Equipos";
+}
+
+<h2 class="text-center">Equipos</h2>
+
+<p class="btn btn-default">
+    @Html.ActionLink("Crear", "Create")
+</p>
+@if (Model.Count() > 0)
+{ 
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Nombre")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Titular)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Suplente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reserva)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombreEquipo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Titular.NombreUsuario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Suplente.NombreUsuario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Reserva.NombreUsuario)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.IdEquipo }) |
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.IdEquipo })
+                </td>
+            </tr>
+        }
+
+    </table>
+    }

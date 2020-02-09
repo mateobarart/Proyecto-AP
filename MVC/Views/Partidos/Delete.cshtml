@@ -1,0 +1,65 @@
+﻿@model MVC.Models.Partido
+
+@{
+    ViewBag.Title = "Eliminar partido";
+}
+
+<h2 class="text-center">Eliminar</h2>
+
+<h3 class="text-center">¿Está seguro que desea eliminar el partido?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaPartido)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FechaPartido)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Hora)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Hora)
+        </dd>
+        <dt>
+            @Html.DisplayName("Competición")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Competicion.NombreCompeticion)
+        </dd>
+        <dt>
+            @Html.DisplayName("Equipo local")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Local.NombreEquipo)
+        </dd>
+        <dt>
+            @Html.DisplayName("Equipo visitante")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Visitante.NombreEquipo)
+        </dd>
+        <dt>
+            @Html.DisplayName("Analista local")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AnalistaLocal.NombreUsuario)
+        </dd>
+        <dt>
+            @Html.DisplayName("AnalistaVisitante")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AnalistaVisitante.NombreUsuario)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver al listado", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,26 @@
+﻿@model MVC.Models.Equipo
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Equipo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NombreEquipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreEquipo)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IdEquipo }) |
+    @Html.ActionLink("Volver al listado", "Index")
+</p>

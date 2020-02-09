@@ -1,0 +1,39 @@
+﻿@model MVC.Models.Competicion
+@{
+    ViewBag.Title = "Eliminar edición";
+}
+
+<h2 class="text-center">Eliminar</h2>
+<h3 class="text-center">¿Está seguro que desea eliminar la edición?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NombreCompeticion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreCompeticion)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Temporada)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Temporada)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm("EliminarEdicionConfirmed", "Competiciones", "POST"))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <input hidden name="IdCompeticion" value="@Model.IdCompeticion" />
+        </div>
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver", "VerEdiciones", new { id = Model.IdCompeticion })
+        </div>
+    }
+</div>

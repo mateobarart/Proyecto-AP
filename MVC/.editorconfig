@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS0659: El tipo reemplaza a Object.Equals(object o), pero no reemplaza a Object.GetHashCode()
+dotnet_diagnostic.CS0659.severity = none

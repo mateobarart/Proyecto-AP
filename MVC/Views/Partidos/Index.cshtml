@@ -1,0 +1,100 @@
+﻿@model IEnumerable<MVC.Models.Partido>
+
+@{
+    ViewBag.Title = "Partidos";
+}
+
+<h2 class="text-center">Partidos</h2>
+
+<p class="btn btn-default">
+    @Html.ActionLink("Crear", "Create")
+</p>
+
+@using (Html.BeginForm("CargarArchivoCSV", "Partidos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <input type="file" name="postedFile" class="form-control col-md-6" />
+        <input type="submit" name="importar" value="Importar CSV" class="btn btn-default" />
+        @Html.ValidationMessage("CargaArchivo","", new { @class = "text-danger" })
+
+    </div>
+}
+@if (Model.Count() > 0)
+{
+    using (Html.BeginForm("FiltrarOAsignarPartidos", "Partidos", "POST"))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("Fecha Inicio:", htmlAttributes: new { @class = "control-label col-md-2" })
+                <input type="date" name="fechaInicio" value="@ViewBag.FechaInicio" class="form-control col-md-6" />
+                @Html.Label("Fecha Fin:", htmlAttributes: new { @class = "control-label col-md-2" })
+                <input type="date" name="fechaFin" value="@ViewBag.FechaFin" class="form-control col-md-6" />
+                <input type="submit" name="FiltrarButton" value="Filtrar" class="btn btn-default" />
+                <input type="submit" name="AsignarButton" value="Asignar" class="btn btn-default" />
+            </div>
+
+        </div>
+    }
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaPartido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hora)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Competicion.NombreCompeticion)
+            </th>
+            <th>
+                @Html.DisplayName("Equipo local")
+            </th>
+            <th>
+                @Html.DisplayName("Equipo visitante")
+            </th>
+            <th>
+                @Html.DisplayName("Analista local")
+            </th>
+            <th>
+                @Html.DisplayName("Analista visitante")
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaPartido)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Hora)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Competicion.NombreCompeticion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Local.NombreEquipo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Visitante.NombreEquipo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AnalistaLocal.NombreUsuario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AnalistaVisitante.NombreUsuario)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.IdPartido }) |
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.IdPartido }) |
+                    @Html.ActionLink("Reasignar", "ReasignarAnalista", new { id = item.IdPartido })
+                </td>
+            </tr>
+        }
+
+    </table>
+}

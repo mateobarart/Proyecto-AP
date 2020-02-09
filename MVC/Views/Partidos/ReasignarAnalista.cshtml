@@ -1,0 +1,87 @@
+﻿@model MVC.Models.Partido
+
+@{
+    ViewBag.Title = "Reasignar partido";
+}
+
+<div>
+    <h4>Reasignar partido</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaPartido)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaPartido)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Hora)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hora)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Competición")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Competicion.NombreCompeticion)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Equipo local")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Local.NombreEquipo)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Equipo visitante")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Visitante.NombreEquipo)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Analista local")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnalistaLocal.NombreUsuario)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Analista visitante")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnalistaVisitante.NombreUsuario)
+        </dd>
+
+    </dl>
+</div>
+
+@using (Html.BeginForm("ReasignarAnalista", "Partidos", "POST"))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <h3>¿Qué desea reasignar?</h3>
+            <br />
+            <input type="submit" name="ReasignarPartido" value="Partido" class="btn btn-default" />
+            <input type="submit" name="ReasignarLocal" value="Analista Local" class="btn btn-default" />
+            <input type="submit" name="ReasignarVisitante" value="Analista Visitante" class="btn btn-default" />
+        </div>
+    </div>
+}
+<p>
+    @Html.ActionLink("Volver", "Index")
+</p>

@@ -1,0 +1,105 @@
+﻿@model MVC.Models.Partido
+
+@{
+    ViewBag.Title = "Editar partido";
+}
+
+<h2 class="text-center">Editar partido</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.IdPartido)
+    <div class="form-group">
+        @Html.LabelFor(model => model.FechaPartido, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.FechaPartido, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.FechaPartido, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Hora, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input class="form-control" type="time" id="hora" name="hora" required>
+            @Html.ValidationMessageFor(model => model.Hora, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Competicion, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select name="Competicion" class="form-control" id="Competicion">
+                @foreach (var item in ViewBag.ListaCompeticiones)
+                {
+                    if (Model.Competicion.IdCompeticion == item.IdCompeticion)
+                    {
+                        <option selected value="@item.IdCompeticion">@item.NombreCompeticion</option>
+                    }
+                    else
+                    {
+                        <option value="@item.IdCompeticion">@item.NombreCompeticion</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Local, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select name="Local" class="form-control" id="Local">
+                @foreach (var item in ViewBag.ListaEquipos)
+                {
+                    if (Model.Local.IdEquipo == item.IdEquipo)
+                    {
+                        <option selected value="@item.IdEquipo">@item.NombreEquipo</option>
+                    }
+                    else
+                    {
+                        <option value="@item.IdEquipo">@item.NombreEquipo</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Visitante, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select name="Visitante" class="form-control" id="Visitante">
+                @foreach (var item in ViewBag.ListaEquipos)
+                {
+                    if (Model.Visitante.IdEquipo == item.IdEquipo)
+                    {
+                        <option selected value="@item.IdEquipo">@item.NombreEquipo</option>
+                    }
+                    else
+                    {
+                        <option value="@item.IdEquipo">@item.NombreEquipo</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Editar" class="btn btn-default" />
+        </div>
+    </div>
+    @Html.ValidationMessage("EditIncorrecto", "", new { @class = "text-danger" })
+</div>
+}
+
+<div>
+    @Html.ActionLink("Volver al listado", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

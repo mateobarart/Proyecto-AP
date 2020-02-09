@@ -1,0 +1,21 @@
+﻿@model MVC.Models.Indisponibilidad
+
+@{
+    ViewBag.Title = "Eliminar indisponibilidad";
+}
+
+           
+<h2 class="text-center">Eliminar</h2>
+
+<h3 class="text-center">¿Está seguro que desea eliminar la indisponibilidad?</h3>
+<div>
+    <hr />
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver al listado", "Index")
+        </div>
+    }
+</div>

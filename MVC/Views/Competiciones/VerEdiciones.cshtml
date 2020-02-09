@@ -1,0 +1,52 @@
+﻿@model IEnumerable<MVC.Models.Competicion>
+
+@{
+    ViewBag.Title = "Competiciones";
+}
+
+<h2 class="text-center">Competiciones</h2>
+
+<p class="btn btn-default">
+    @Html.ActionLink("Crear edición", "CrearEdicion", new { id = Model.ToList()[0].IdCompeticion })
+</p>
+@if (Model.Count() > 0)
+{ 
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreCompeticion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Temporada)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prioridad)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombreCompeticion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Temporada)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Prioridad)
+                </td>
+                <td>
+                    @Html.ActionLink("Equipos", "VerEquipos", new { id = item.IdCompeticion }) |
+                    @Html.ActionLink("Editar edición", "EditarEdicion", new { id = item.IdCompeticion }) |
+                    @Html.ActionLink("Eliminar edición", "EliminarEdicion", new { id = item.IdCompeticion })
+                </td>
+            </tr>
+        }
+
+    </table>}
+
+<div>
+    @Html.ActionLink("Volver al listado", "Index")
+</div>

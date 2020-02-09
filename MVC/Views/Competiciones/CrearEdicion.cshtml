@@ -1,0 +1,54 @@
+﻿@model MVC.Models.Competicion
+
+@{
+    ViewBag.Title = "Crear edición";
+}
+
+<h2 class="text-center">Crear edición</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.Label(@Model.NombreCompeticion, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="form-group">
+            <input hidden name="NombreCompeticion" value="@Model.NombreCompeticion" />
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Temporada, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input name="Temporada" type="text" value="" class="form-control"/>
+            @*@Html.EditorFor(model => model.Temporada, new { htmlAttributes = new { @class = "form-control" } })*@
+            @Html.ValidationMessageFor(model => model.Temporada, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Prioridad, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input name="Prioridad" type="number" min="1" max="5" value="" class="form-control" />
+            @*@Html.EditorFor(model => model.Prioridad, new { htmlAttributes = new { @class = "form-control" } })*@
+            @Html.ValidationMessageFor(model => model.Prioridad, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Crear" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Volver", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

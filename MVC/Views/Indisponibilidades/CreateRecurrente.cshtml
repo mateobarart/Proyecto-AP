@@ -1,0 +1,71 @@
+﻿@model MVC.Models.IndisponibilidadRecurrente
+
+
+@using (Html.BeginForm("CrearRecurrente","Indisponibilidades", "POST")) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4 class="text-center">Indisponibilidad Recurrente</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DiaSemana, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select name="diaSemana" class="form-control" id="diaSemana">
+                <option value="Lunes">Lunes</option>
+                <option value="Martes">Martes</option>
+                <option value="Miércoles">Miércoles</option>
+                <option value="Jueves">Jueves</option>
+                <option value="Viernes">Viernes</option>
+                <option value="Sábado">Sábado</option>
+                <option value="Domingo">Domingo</option>
+            </select>
+        </div>
+    </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HoraInicio, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="form-control" type="time" id="hora" name="horaInicio" required>
+                @Html.ValidationMessageFor(model => model.HoraInicio, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HoraFin, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="form-control" type="time" id="hora" name="horaFin" required>
+                @Html.ValidationMessageFor(model => model.HoraFin, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @if (!Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) { 
+        <div class="form-group">
+            @Html.Label("Analista", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="IdUsuario" class="form-control" id="IdUsuario">
+                    @foreach (var item in ViewBag.ListaAnalistas)
+                    {
+                        <option value="@item.IdUsuario">@item.NombreUsuario</option>
+                    }
+                </select>
+            </div>
+        </div>
+        }
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Crear" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Volver al listado", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
