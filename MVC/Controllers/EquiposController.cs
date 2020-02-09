@@ -15,7 +15,7 @@ namespace MVC.Controllers
     {
         private Context db = new Context();
 
-        // GET: Equipos
+        // GET: Equipos  
         public ActionResult Index()
         {
             if (Session["mailUsuarioLogueado"] == null) return RedirectToAction("Login", "Account");
