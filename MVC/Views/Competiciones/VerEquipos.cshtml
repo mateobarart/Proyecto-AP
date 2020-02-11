@@ -9,29 +9,57 @@
 <p class="btn btn-default">
     @Html.ActionLink("Agregar equipo", "AgregarEquipo", new { id = ViewBag.IdCompeticion })
 </p>
+<div>
+    <form class="navbar-form navbar-left" role="search">
+        <input type="text" id="myInput" class="form-control" onkeyup="BuscarNombre()" placeholder="Buscar equipo...">
+    </form>
+</div>
 @if (Model.Count() > 0)
 { 
-    <table class="table">
+<table class="table table-responsive table-striped table-hover" id="myTable">
+    <tr>
+        <th>
+            @Html.DisplayName("Nombre")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
         <tr>
-            <th>
-                @Html.DisplayName("Nombre")
-            </th>
-            <th></th>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreEquipo)
+            </td>
+            <td>
+                @Html.ActionLink("Quitar", "QuitarEquipo", new { id = item.IdEquipo, idCompeticion = ViewBag.IdCompeticion })
+            </td>
         </tr>
+    }
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NombreEquipo)
-                </td>
-                <td>
-                    @Html.ActionLink("Quitar", "QuitarEquipo", new { id = item.IdEquipo, idCompeticion = ViewBag.IdCompeticion })
-                </td>
-            </tr>
-        }
-
-    </table>}
+</table>}
 <div>
     @Html.ActionLink("Volver", "VerEdiciones", new { id = ViewBag.IdCompeticion })
 </div>
+<script>
+    function BuscarNombre() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>

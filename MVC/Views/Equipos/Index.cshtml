@@ -9,46 +9,156 @@
 <p class="btn btn-default">
     @Html.ActionLink("Crear", "Create")
 </p>
+<div>
+    <form class="navbar-form navbar-left" role="search">
+        <input type="text" id="myInputEquipo" class="form-control" onkeyup="BuscarEquipo()" placeholder="Buscar equipo...">
+    </form>
+</div>
+<div>
+    <form class="navbar-form navbar-left" role="search">
+        <input type="text" id="myInputTitular" class="form-control" onkeyup="BuscarTitular()" placeholder="Buscar titular...">
+    </form>
+</div>
+<div>
+    <form class="navbar-form navbar-left" role="search">
+        <input type="text" id="myInputSuplente" class="form-control" onkeyup="BuscarSuplente()" placeholder="Buscar suplente...">
+    </form>
+</div>
+<div>
+    <form class="navbar-form navbar-left" role="search">
+        <input type="text" id="myInputReserva" class="form-control" onkeyup="BuscarReserva()" placeholder="Buscar reserva...">
+    </form>
+</div>
 @if (Model.Count() > 0)
 { 
-    <table class="table">
+<table class="table table-responsive table-striped table-hover" id="myTable">
+    <tr>
+        <th>
+            @Html.DisplayName("Nombre")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Titular)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Suplente)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Reserva)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
         <tr>
-            <th>
-                @Html.DisplayName("Nombre")
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Titular)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Suplente)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Reserva)
-            </th>
-            <th></th>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreEquipo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titular.NombreUsuario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Suplente.NombreUsuario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reserva.NombreUsuario)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.IdEquipo }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.IdEquipo })
+            </td>
         </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NombreEquipo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Titular.NombreUsuario)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Suplente.NombreUsuario)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Reserva.NombreUsuario)
-                </td>
-                <td>
-                    @Html.ActionLink("Editar", "Edit", new { id = item.IdEquipo }) |
-                    @Html.ActionLink("Eliminar", "Delete", new { id = item.IdEquipo })
-                </td>
-            </tr>
-        }
-
-    </table>
     }
+
+</table>
+    }
+
+<script>
+    function BuscarEquipo() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInputEquipo");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function BuscarTitular() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInputTitular");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function BuscarSuplente() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInputSuplente");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function BuscarReserva() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInputReserva");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[3];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>

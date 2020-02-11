@@ -1,16 +1,18 @@
 ﻿@model MVC.Models.Equipo
 
-
-@using (Html.BeginForm("AgregarEquipoACompeticion","Competiciones", "POST")) 
+@{
+    ViewBag.Title = "Agregar equipo";
+}
+@using (Html.BeginForm("AgregarEquipoACompeticion", "Competiciones", "POST"))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4 class="text-center">Agregar equipo</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            <input hidden name="IdCompeticion" value="@ViewBag.IdCompeticion"/>
+            <input hidden name="IdCompeticion" value="@ViewBag.IdCompeticion" />
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.NombreEquipo, htmlAttributes: new { @class = "control-label col-md-2" })
