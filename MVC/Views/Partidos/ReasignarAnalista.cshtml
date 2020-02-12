@@ -73,13 +73,17 @@
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            <h3>¿Qué desea reasignar?</h3>
-            <br />
+    <div class="form-group">
+        <h3>¿Qué desea reasignar?</h3>
+        <br />
             <input type="submit" name="ReasignarPartido" value="Partido" class="btn btn-default" />
+        @if (Model.AnalistaLocal != null) { 
             <input type="submit" name="ReasignarLocal" value="Analista Local" class="btn btn-default" />
+        }
+        @if (Model.AnalistaVisitante != null) { 
             <input type="submit" name="ReasignarVisitante" value="Analista Visitante" class="btn btn-default" />
-        </div>
+        }
+    </div>
     </div>
 }
 <p>
