@@ -6,91 +6,175 @@
 
 <h2 class="text-center">Indisponibilidades</h2>
 
-<p class="btn btn-default">
+<p class="btn btn-default navbar-left">
     @Html.ActionLink("Crear", "Create")
 </p>
-    <h4 class="text-center">Recurrentes</h4>
+<div>
+    <form class="navbar-form navbar-left" role="search">
+        <input type="text" id="myInput" class="form-control" onkeyup="BuscarNombre()" placeholder="Buscar usuario...">
+    </form>
+</div>
+<div>
+    <form class="navbar-form navbar-left" role="search">
+        <select id="myInputDiaSemana" class="form-control" onchange="BuscarDiaSemana()">
+            <option value="">Seleccione un día</option>
+            <option value="Lunes">Lunes</option>
+            <option value="Martes">Martes</option>
+            <option value="Miércoles">Miércoles</option>
+            <option value="Jueves">Jueves</option>
+            <option value="Viernes">Viernes</option>
+            <option value="Sábado">Sábado</option>
+            <option value="Domingo">Domingo</option>
+            <option value="">Todos</option>
+        </select>
+    </form>
+</div>
+<br />
+<br />
+<h4 class="text-center">Recurrentes</h4>
 
-    <table class="table">
+<table class="table table-responsive table-striped table-hover" id="myTableRecurrentes">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Usuario.NombreUsuario)
+        </th>
+        <th>
+            @Html.DisplayName("Día Semana")
+        </th>
+        <th>
+            @Html.DisplayName("Hora Inicio")
+        </th>
+        <th>
+            @Html.DisplayName("Hora Fin")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in ViewBag.ListaRecurrentes)
+    {
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Usuario.NombreUsuario)
-            </th>
-            <th>
-                @Html.DisplayName("Día Semana")
-            </th>
-            <th>
-                @Html.DisplayName("Hora Inicio")
-            </th>
-            <th>
-                @Html.DisplayName("Hora Fin")
-            </th>
-            <th></th>
+            <td>
+                @item.Usuario.NombreUsuario
+            </td>
+            <td>
+                @item.DiaSemana
+            </td>
+            <td>
+                @item.HoraInicio
+            </td>
+            <td>
+                @item.HoraFin
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "EditarRecurrente", new { id = item.IdIndisponibilidad }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.IdIndisponibilidad })
+            </td>
         </tr>
+    }
 
-        @foreach (var item in ViewBag.ListaRecurrentes)
-        {
-            <tr>
-                <td>
-                    @item.Usuario.NombreUsuario
-                </td>
-                <td>
-                    @item.DiaSemana
-                </td>
-                <td>
-                    @item.HoraInicio
-                </td>
-                <td>
-                    @item.HoraFin
-                </td>
-                <td>
-                    @Html.ActionLink("Editar", "EditarRecurrente", new { id = item.IdIndisponibilidad }) |
-                    @Html.ActionLink("Eliminar", "Delete", new { id = item.IdIndisponibilidad })
-                </td>
-            </tr>
+</table>
+
+<hr />
+
+<h4 class="text-center">Únicas</h4>
+
+<table class="table table-responsive table-striped table-hover" id="myTableUnicas">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Usuario.NombreUsuario)
+        </th>
+        <th>
+            Fecha Inicio
+        </th>
+        <th>
+            Fecha Fin
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in ViewBag.ListaUnicas)
+    {
+        <tr>
+            <td>
+                @item.Usuario.NombreUsuario
+            </td>
+            <td>
+                @item.FechaInicio
+            </td>
+            <td>
+                @item.FechaFin
+            </td>
+
+            <td>
+                @Html.ActionLink("Editar", "EditarUnica", new { id = item.IdIndisponibilidad }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.IdIndisponibilidad })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script>
+    function BuscarNombre() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        tableRecurrentes = document.getElementById("myTableRecurrentes");
+        tr = tableRecurrentes.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
         }
 
-    </table>
+        tableRecurrentes = document.getElementById("myTableUnicas");
+        tr = tableRecurrentes.getElementsByTagName("tr");
 
-    <hr />
-
-    <h4 class="text-center">Únicas</h4>
-
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Usuario.NombreUsuario)
-            </th>
-            <th>
-                Fecha Inicio
-            </th>
-            <th>
-                Fecha Fin
-            </th>
-
-            <th></th>
-        </tr>
-
-        @foreach (var item in ViewBag.ListaUnicas)
-        {
-            <tr>
-                <td>
-                    @item.Usuario.NombreUsuario
-                </td>
-                <td>
-                    @item.FechaInicio
-                </td>
-                <td>
-                    @item.FechaFin
-                </td>
-
-                <td>
-                    @Html.ActionLink("Editar", "EditarUnica", new { id = item.IdIndisponibilidad }) |
-                    @Html.ActionLink("Eliminar", "Delete", new { id = item.IdIndisponibilidad })
-                </td>
-            </tr>
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
         }
+    }
 
-    </table>
+    function BuscarDiaSemana() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInputDiaSemana");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTableRecurrentes");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
 
 

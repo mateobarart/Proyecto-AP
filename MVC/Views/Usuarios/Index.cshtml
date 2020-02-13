@@ -17,7 +17,7 @@
 </div>
 <div>
     <form class="navbar-form navbar-left" role="search">
-        <select id="myInputTU" class="form-control" onchange="BuscarTipoUsuario()" placeholder="Buscar tipo de usuario...">
+        <select id="myInputTU" class="form-control" onchange="BuscarTipoUsuario()">
             <option value="">Seleccione tipo de usuario</option>
             <option value="Analista">Analista</option>
             <option value="Supervisor">Supervisor</option>
@@ -91,7 +91,14 @@
                 @Html.ActionLink("Eliminar", "Delete", new { id = item.IdUsuario }) |
                 @Html.ActionLink("Indisponibilidades", "VerIndisponibilidades", new { id = item.IdUsuario })
             </td>
-        }else
+        }
+        else if (item.IdUsuario.ToString() == Session["idUsuarioLogueado"].ToString())
+        {
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.IdUsuario })
+            </td>
+        }
+        else
         {
             <td>
                 @Html.ActionLink("Editar", "Edit", new { id = item.IdUsuario }) |

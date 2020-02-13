@@ -4,13 +4,31 @@
     ViewBag.Title = "Indisponibilidades";
 }
 
-<h2 class="text-center">Recurrentes</h2>
+<h2 class="text-center">Indisponibilidades</h2>
 
-<p>
+<p class="btn btn-default navbar-left">
     @Html.ActionLink("Crear", "Create")
 </p>
+<div>
+    <form class="navbar-form navbar-left" role="search">
+        <select id="myInputDiaSemana" class="form-control" onchange="BuscarDiaSemana()">
+            <option value="">Seleccione un día</option>
+            <option value="Lunes">Lunes</option>
+            <option value="Martes">Martes</option>
+            <option value="Miércoles">Miércoles</option>
+            <option value="Jueves">Jueves</option>
+            <option value="Viernes">Viernes</option>
+            <option value="Sábado">Sábado</option>
+            <option value="Domingo">Domingo</option>
+            <option value="">Todos</option>
+        </select>
+    </form>
+</div>
+<br />
+<br />
+<h4 class="text-center">Recurrentes</h4>
 
-<table class="table">
+<table class="table table-responsive table-striped table-hover" id="myTableRecurrentes">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Usuario.NombreUsuario)
@@ -54,9 +72,9 @@
 
 <hr />
 
-<h2 class="text-center">Únicas</h2>
+<h4 class="text-center">Únicas</h4>
 
-<table class="table">
+<table class="table table-responsive table-striped table-hover">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Usuario.NombreUsuario)
@@ -67,7 +85,7 @@
         <th>
             Fecha Fin
         </th>
-      
+
         <th></th>
     </tr>
 
@@ -83,7 +101,7 @@
             <td>
                 @item.FechaFin
             </td>
-           
+
             <td>
                 @Html.ActionLink("Editar", "EditarUnica", new { id = item.IdIndisponibilidad }) |
                 @Html.ActionLink("Eliminar", "Delete", new { id = item.IdIndisponibilidad })
@@ -96,3 +114,27 @@
 <div>
     @Html.ActionLink("Volver", "Index", "Usuarios")
 </div>
+
+<script>
+     function BuscarDiaSemana() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInputDiaSemana");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTableRecurrentes");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>

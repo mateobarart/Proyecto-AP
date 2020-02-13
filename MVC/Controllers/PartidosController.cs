@@ -116,52 +116,71 @@ namespace MVC.Controllers
                     Equipo eLocal = partido.Local;
                     Equipo eVisitante = partido.Visitante;
                     Partido nuevoPartido = new Partido(fecha, hora, competicion, eLocal, eVisitante);
-                    if (ReasignarPartido == null && ReasignarLocal == "Analista Local" && ReasignarVisitante == null) nuevoPartido.AnalistaVisitante = partido.AnalistaVisitante;
-                    if (ReasignarPartido == null && ReasignarLocal == null && ReasignarVisitante == "Analista Visitante") nuevoPartido.AnalistaLocal = partido.AnalistaLocal;
-                    eliminarPartido(partido);
+                    bool analistaLocal = false;
+                    bool analistaVisitante = false;
+                    if (ReasignarPartido == "Partido" && ReasignarLocal == null && ReasignarVisitante == null)
+                    {
+                        analistaLocal = true;
+                        analistaVisitante = true;
+                    }
+                    if (ReasignarPartido == null && ReasignarLocal == "Analista Local" && ReasignarVisitante == null)
+                    {
+                        analistaLocal = true;
+                        nuevoPartido.AnalistaVisitante = partido.AnalistaVisitante;
+                    }
+                    if (ReasignarPartido == null && ReasignarLocal == null && ReasignarVisitante == "Analista Visitante")
+                    {
+                        analistaVisitante = true;
+                        nuevoPartido.AnalistaLocal = partido.AnalistaLocal;
+                    }
                     AsignarPartido(nuevoPartido);
+                    EliminarPartido(partido, analistaLocal, analistaVisitante);
+                    
                 }
             }
             return RedirectToAction("Index");
         }
 
-        private void eliminarPartido(Partido partido)
+        private void EliminarPartido(Partido partido, bool analistaLocal, bool analistaVisitante)
         {
-            eliminarIndisponibilidades(partido);
+            EliminarIndisponibilidades(partido, analistaLocal, analistaVisitante);
             db.DbPartidos.Remove(partido);
             db.SaveChanges();
         }
 
-        private void eliminarIndisponibilidades(Partido partido)
+        private void EliminarIndisponibilidades(Partido partido, bool analistaLocal, bool analistaVisitante)
         {
             DateTime comienzoDia = new DateTime(partido.FechaPartido.Year, partido.FechaPartido.Month, partido.FechaPartido.Day, 0, 0, 0);
             DateTime finDia = new DateTime(partido.FechaPartido.Year, partido.FechaPartido.Month, partido.FechaPartido.Day, 23, 59, 0);
             DateTime fechaInicioLimite = partido.FechaPartido.AddMinutes(-30);
             DateTime fechaFinLimite = partido.FechaPartido.AddMinutes(120);
-            if(partido.AnalistaLocal != null)
+            if(analistaLocal)
             {
-                eliminarIndisponibilidad(partido.AnalistaLocal, comienzoDia, finDia);
-                eliminarIndisponibilidad(partido.AnalistaLocal, fechaInicioLimite, fechaFinLimite);
+                EliminarIndisponibilidad(partido.AnalistaLocal, comienzoDia, finDia);
+                EliminarIndisponibilidad(partido.AnalistaLocal, fechaInicioLimite, fechaFinLimite);
             }
-            if (partido.AnalistaVisitante != null)
+            if (analistaVisitante)
             {
-                eliminarIndisponibilidad(partido.AnalistaVisitante, comienzoDia, finDia);
-                eliminarIndisponibilidad(partido.AnalistaVisitante, fechaInicioLimite, fechaFinLimite);
+                EliminarIndisponibilidad(partido.AnalistaVisitante, comienzoDia, finDia);
+                EliminarIndisponibilidad(partido.AnalistaVisitante, fechaInicioLimite, fechaFinLimite);
             }
         }
 
-        private void eliminarIndisponibilidad(Usuario usuario, DateTime comienzo, DateTime fin)
+        private void EliminarIndisponibilidad(Usuario usuario, DateTime comienzo, DateTime fin)
         {
-            for (int i = usuario.Indisponibilidades.Count() - 1; i >= 0; i--)
+            if(usuario != null)
             {
-                if(usuario.Indisponibilidades[i] is IndisponibilidadUnica)
+                for (int i = usuario.Indisponibilidades.Count() - 1; i >= 0; i--)
                 {
-                    IndisponibilidadUnica iu = (IndisponibilidadUnica)usuario.Indisponibilidades[i];
-                    if(iu.FechaInicio == comienzo && iu.FechaFin == fin)
+                    if(usuario.Indisponibilidades[i] is IndisponibilidadUnica)
                     {
-                        db.Indisponibilidads.Remove(usuario.Indisponibilidades[i]);
-                        //usuario.Indisponibilidades.Remove(usuario.Indisponibilidades[i]);
-                        break;
+                        IndisponibilidadUnica iu = (IndisponibilidadUnica)usuario.Indisponibilidades[i];
+                        if(iu.FechaInicio == comienzo && iu.FechaFin == fin)
+                        {
+                            db.Indisponibilidads.Remove(usuario.Indisponibilidades[i]);
+                            //usuario.Indisponibilidades.Remove(usuario.Indisponibilidades[i]);
+                            break;
+                        }
                     }
                 }
             }
@@ -317,7 +336,7 @@ namespace MVC.Controllers
             }
             List<Partido> partidos = new List<Partido>();
             partidos.Add(partido);
-            recorrerPartidos(partidos);
+            RecorrerPartidos(partidos);
             db.DbPartidos.Add(partido);
             db.SaveChanges();
             return Redirect("Index");
@@ -333,12 +352,12 @@ namespace MVC.Controllers
             DateTime fechaFin2 = (DateTime)fechaFin;
             fechaFin2 = fechaFin2.AddDays(1);
             List<Partido> partidos = db.DbPartidos.Where(p => p.FechaPartido >= fechaInicio).Where(p => p.FechaPartido < fechaFin2).OrderBy(p => p.FechaPartido).ToList();
-            recorrerPartidos(partidos);
+            RecorrerPartidos(partidos);
             db.SaveChanges();
             return View("Index", db.DbPartidos.Where(p => p.FechaPartido >= fechaInicio).Where(p => p.FechaPartido < fechaFin2).OrderBy(p => p.FechaPartido).ToList());
         }
 
-        private void recorrerPartidos(List<Partido> partidos)
+        private void RecorrerPartidos(List<Partido> partidos)
         {
             if(BuscarAnalistas(partidos, "titular")) 
             {
@@ -714,7 +733,7 @@ namespace MVC.Controllers
             if (Session["mailUsuarioLogueado"] == null) return RedirectToAction("Login", "Account");
             if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
             Partido partido = db.DbPartidos.Find(id);
-            eliminarPartido(partido);
+            EliminarPartido(partido, true, true);
            
             return RedirectToAction("Index");
         }
