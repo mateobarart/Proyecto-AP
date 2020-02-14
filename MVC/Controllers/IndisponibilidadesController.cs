@@ -24,7 +24,7 @@ namespace MVC.Controllers
             List<IndisponibilidadUnica> iu = new List<IndisponibilidadUnica>();
             foreach (Indisponibilidad i in ins)
             {
-                if(i.Usuario != null)
+                if(i.Usuario != null && i.Usuario.Activo)
                 {
                     if(i is IndisponibilidadRecurrente)
                     {

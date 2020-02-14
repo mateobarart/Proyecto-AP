@@ -76,7 +76,7 @@ namespace MVC.Controllers
                 {
 
                     Usuario usuario = db.DbUsuarios.SingleOrDefault(u => u.Mail.ToUpper() == model.Email.ToUpper() && u.Password == model.Password);
-                    if(usuario != null)
+                    if(usuario != null && usuario.Activo)
                     {
                         Session["mailUsuarioLogueado"] = usuario.Mail;
                         Session["nombreUsuarioLogueado"] = usuario.NombreUsuario;

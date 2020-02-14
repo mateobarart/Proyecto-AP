@@ -175,7 +175,7 @@ namespace MVC.Controllers
         {
             if (Session["mailUsuarioLogueado"] == null) return RedirectToAction("Login", "Account");
             if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
-            return View(db.DbUsuarios.Where(u => u.TipoUsuario == TipoUsuario.Analista).OrderBy(u => u.NombreUsuario).OrderBy(u => u.Puntaje).ToList());
+            return View(db.DbUsuarios.Where(u => u.TipoUsuario == TipoUsuario.Analista).Where(u => u.Activo == true).OrderBy(u => u.NombreUsuario).OrderBy(u => u.Puntaje).ToList());
         }
 
         // POST: Usuarios/Edit/5
