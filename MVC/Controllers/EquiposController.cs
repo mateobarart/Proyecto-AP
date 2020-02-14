@@ -171,7 +171,7 @@ namespace MVC.Controllers
             catch (Exception)
             {
                 ModelState.AddModelError("DeleteIncorrecto", "No se puede eliminar el equipo. Tiene partidos asignados.");
-                throw;
+                return View();
             }
         }
 
