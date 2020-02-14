@@ -34,11 +34,14 @@ namespace MVC.Models
 
         public int Puntaje { get; set; }
 
+        public bool Activo { get; set; }
+
         public virtual List<Indisponibilidad> Indisponibilidades { get; set; }
 
         public Usuario()
         {
             Indisponibilidades = new List<Indisponibilidad>();
+            Activo = true;
         }
     }
 

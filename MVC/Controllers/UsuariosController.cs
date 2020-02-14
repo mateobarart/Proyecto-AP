@@ -19,7 +19,7 @@ namespace MVC.Controllers
         {
             if (Session["mailUsuarioLogueado"] == null ) return RedirectToAction("Login", "Account");
             if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
-            return View(db.DbUsuarios.ToList());
+            return View(db.DbUsuarios.Where(u => u.Activo == true).ToList());
         }
 
 
@@ -211,6 +211,52 @@ namespace MVC.Controllers
                 return HttpNotFound();
             }
             return View(usuario);
+        }
+
+        // GET: Usuarios/Delete/5
+        public ActionResult DeshabilitarUsuario(int? id)
+        {
+            if (Session["mailUsuarioLogueado"] == null) return RedirectToAction("Login", "Account");
+            if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Usuario usuario = db.DbUsuarios.Find(id);
+            if (usuario == null)
+            {
+                return HttpNotFound();
+            }
+            usuario.Activo = false;
+            db.Entry(usuario).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult HabilitarUsuario(int? id)
+        {
+            if (Session["mailUsuarioLogueado"] == null) return RedirectToAction("Login", "Account");
+            if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Usuario usuario = db.DbUsuarios.Find(id);
+            if (usuario == null)
+            {
+                return HttpNotFound();
+            }
+            usuario.Activo = true;
+            db.Entry(usuario).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult UsuariosInhabilitados()
+        {
+            if (Session["mailUsuarioLogueado"] == null) return RedirectToAction("Login", "Account");
+            if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
+            return View(db.DbUsuarios.Where(u => u.Activo == false).ToList());
         }
 
         // POST: Usuarios/Delete/5

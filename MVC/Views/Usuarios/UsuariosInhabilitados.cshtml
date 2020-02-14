@@ -1,15 +1,10 @@
 ﻿@model IEnumerable<MVC.Models.Usuario>
-
 @{
-    ViewBag.Title = "Usuarios";
+    ViewBag.Title = "Usuarios inhabilitados";
 }
 
-<h2 class="text-center">Usuarios</h2>
-<div>
-    <p class="btn btn-default navbar-left">
-        @Html.ActionLink("Crear", "Create")
-    </p>
-</div>
+<h2 class="text-center">Usuarios inhabilitados</h2>
+
 <div>
     <form class="navbar-form navbar-left" role="search">
         <input type="text" id="myInput" class="form-control" onkeyup="BuscarNombre()" placeholder="Buscar usuario...">
@@ -27,22 +22,11 @@
         </select>
     </form>
 </div>
-@*<div>
-    <form class="navbar-form navbar-left" role="search">
-        <input type="text" id="myInputTU" class="form-control" onkeyup="BuscarTipoUsuario()" placeholder="Buscar tipo de usuario...">
-    </form>
-</div>*@
 <div>
     <form class="navbar-form navbar-left" role="search">
         <input type="text" id="myInputMail" class="form-control" onkeyup="BuscarMail()" placeholder="Buscar mail...">
     </form>
 </div>
-<div>
-    <p class="navbar-right">
-        @Html.ActionLink("Usuarios inhabilitados", "UsuariosInhabilitados")
-    </p>
-</div>
-@if(Model.Count() > 0) { 
 <table class="table table-responsive table-striped table-hover" id="myTable">
     <tr>
         <th>
@@ -57,69 +41,51 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    ViewBag.mostrar = "False";
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.NombreUsuario)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.TipoUsuario)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Mail)
-    </td>
+    @foreach (var item in Model)
+    {
+        ViewBag.mostrar = "False";
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreUsuario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoUsuario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mail)
+            </td>
 
-    @if (item.TipoUsuario.Equals(MVC.Models.TipoUsuario.Analista))
-    {
-        ViewBag.mostrar = "True";
-    }
-    @if (Session["tipoUsuarioLogueado"].ToString().Equals("Manager"))
-    {
-        ViewBag.mostrar = "True";
-    }
-    @if (Session["tipoUsuarioLogueado"].ToString().Equals("TeamLeader") && !item.TipoUsuario.Equals(MVC.Models.TipoUsuario.Manager))
-    {
-        ViewBag.mostrar = "True";
-    }
-    @if (Session["tipoUsuarioLogueado"].ToString().Equals("Supervisor") && !item.TipoUsuario.Equals(MVC.Models.TipoUsuario.Manager) && !item.TipoUsuario.Equals(MVC.Models.TipoUsuario.TeamLeader))
-    {
-        ViewBag.mostrar = "True";
-    }
-    @if (ViewBag.mostrar == "True")
-    {
-        if (item.TipoUsuario.Equals(MVC.Models.TipoUsuario.Analista))
-        {
-            <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.IdUsuario }) |
-                @Html.ActionLink("Deshabilitar", "DeshabilitarUsuario", new { id = item.IdUsuario }) |
-                @Html.ActionLink("Indisponibilidades", "VerIndisponibilidades", new { id = item.IdUsuario })
-            </td>
-        }
-        else if (item.IdUsuario.ToString() == Session["idUsuarioLogueado"].ToString())
-        {
-            <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.IdUsuario })
-            </td>
-        }
-        else
-        {
-            <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.IdUsuario }) |
-                @Html.ActionLink("Deshabilitar", "DeshabilitarUsuario", new { id = item.IdUsuario })
-            </td>
-        }
-    }
-    else
-    {
-        <td></td>
-    }
+            @if (item.TipoUsuario.Equals(MVC.Models.TipoUsuario.Analista))
+            {
+                ViewBag.mostrar = "True";
+            }
+            @if (Session["tipoUsuarioLogueado"].ToString().Equals("Manager"))
+            {
+                ViewBag.mostrar = "True";
+            }
+            @if (Session["tipoUsuarioLogueado"].ToString().Equals("TeamLeader") && !item.TipoUsuario.Equals(MVC.Models.TipoUsuario.Manager))
+            {
+                ViewBag.mostrar = "True";
+            }
+            @if (Session["tipoUsuarioLogueado"].ToString().Equals("Supervisor") && !item.TipoUsuario.Equals(MVC.Models.TipoUsuario.Manager) && !item.TipoUsuario.Equals(MVC.Models.TipoUsuario.TeamLeader))
+            {
+                ViewBag.mostrar = "True";
+            }
+            @if (ViewBag.mostrar == "True")
+            {
+                <td>
+                    @Html.ActionLink("Habilitar", "HabilitarUsuario", new { id = item.IdUsuario })
+                </td>
+            }
+            else
+            {
+                <td></td>
+            }
 
-</tr>
-}
+        </tr>
+    }
 
 </table>
-}
 
 <script>
     function BuscarNombre() {
@@ -165,7 +131,7 @@
             }
         }
     }
-     function BuscarMail() {
+    function BuscarMail() {
         // Declare variables
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("myInputMail");

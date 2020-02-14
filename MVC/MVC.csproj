@@ -222,6 +222,10 @@
     <Compile Include="Migrations\202002091921112_startWeb.Designer.cs">
       <DependentUpon>202002091921112_startWeb.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002140119283_usuariosActivos.cs" />
+    <Compile Include="Migrations\202002140119283_usuariosActivos.Designer.cs">
+      <DependentUpon>202002140119283_usuariosActivos.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Competicion.cs" />
@@ -347,6 +351,7 @@
     <Content Include="Views\Indisponibilidades\EditarUnica.cshtml" />
     <Content Include="Views\Indisponibilidades\EditarRecurrente.cshtml" />
     <Content Include="Views\Partidos\ReasignarAnalista.cshtml" />
+    <Content Include="Views\Usuarios\UsuariosInhabilitados.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -363,6 +368,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202002091921112_startWeb.resx">
       <DependentUpon>202002091921112_startWeb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002140119283_usuariosActivos.resx">
+      <DependentUpon>202002140119283_usuariosActivos.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
