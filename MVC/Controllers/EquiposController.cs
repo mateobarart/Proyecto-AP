@@ -161,10 +161,18 @@ namespace MVC.Controllers
         {
             if (Session["mailUsuarioLogueado"] == null) return RedirectToAction("Login", "Account");
             if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
-            Equipo equipo = db.DbEquipos.Find(id);
-            db.DbEquipos.Remove(equipo);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                Equipo equipo = db.DbEquipos.Find(id);
+                db.DbEquipos.Remove(equipo);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("DeleteIncorrecto", "No se puede eliminar el equipo. Tiene partidos asignados.");
+                throw;
+            }
         }
 
         protected override void Dispose(bool disposing)
