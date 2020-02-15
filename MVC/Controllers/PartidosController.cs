@@ -67,6 +67,11 @@ namespace MVC.Controllers
                 if (local.Equals(visitante))
                 {
                     ModelState.AddModelError("CreatePartidoIncorrecto", "Los equipos no pueden ser iguales.");
+                    ViewBag.ListaCompeticiones = db.DbCompeticiones.ToList();
+                    ViewBag.ListaEquipos = db.DbEquipos.ToList();
+                    ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
+
+                    return View();
                 }else { 
                     Competicion competicion = db.DbCompeticiones.Find(Int32.Parse(Competicion));
                     DateTime fechaHora = new DateTime(FechaPartido.Year,
@@ -703,7 +708,6 @@ namespace MVC.Controllers
                     ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).ToList();
                     ModelState.AddModelError("EditIncorrecto", "Los equipos no pueden ser iguales.");
                 }
-               
             }
             return View(partido);
         }

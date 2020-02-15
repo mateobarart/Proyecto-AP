@@ -25,7 +25,8 @@ namespace MVC.Models
         public int IdEquipo { get; set; }
 
         [Required]
-        //[Index(IsUnique = true)]
+        [StringLength(450)]
+        [Index(IsUnique = true)]
         [DisplayName("Nombre del equipo")]
         public string NombreEquipo { get; set; }
 

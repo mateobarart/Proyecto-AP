@@ -134,17 +134,39 @@ namespace MVC.Controllers
                     int idUsuario = int.Parse(IdUsuario);
                     if (idUsuario != usuario.IdUsuario) return RedirectToAction("Index", "Home");
                 }
-                IndisponibilidadRecurrente indisponibilidad = new IndisponibilidadRecurrente(diaSemana, usuario, HoraInicio, HoraFin);
-                usuario.Indisponibilidades.Add(indisponibilidad);
-                db.Indisponibilidads.Add(indisponibilidad);
-                db.Entry(usuario).State = EntityState.Modified;
-                db.SaveChanges();
-                if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista"))
-                    return RedirectToAction("IndisponibilidadesUsuario", new { id = usuario.IdUsuario });
-                else
+                try {
+                    DateTime fechaI = new DateTime(DateTime.Today.Year,
+                      DateTime.Today.Month,
+                      DateTime.Today.Day,
+                      Int32.Parse(HoraInicio.Substring(0, 2)),
+                      Int32.Parse(HoraInicio.Substring(HoraFin.Length - 2, 2)), 0);
+                    DateTime fechaF = new DateTime(DateTime.Today.Year,
+                      DateTime.Today.Month,
+                      DateTime.Today.Day,
+                      Int32.Parse(HoraFin.Substring(0, 2)),
+                      Int32.Parse(HoraFin.Substring(HoraFin.Length - 2, 2)), 0);
+                    if(fechaF >= fechaI) { 
+                        IndisponibilidadRecurrente indisponibilidad = new IndisponibilidadRecurrente(diaSemana, usuario, HoraInicio, HoraFin);
+                        usuario.Indisponibilidades.Add(indisponibilidad);
+                        db.Indisponibilidads.Add(indisponibilidad);
+                        db.Entry(usuario).State = EntityState.Modified;
+                        db.SaveChanges();
+                        if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista"))
+                            return RedirectToAction("IndisponibilidadesUsuario", new { id = usuario.IdUsuario });
+                        else
+                            return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Create", "La fecha final debe ser mayor o igual a la inicial.");
+                    }
+                }
+                catch (Exception)
+                {
                     return RedirectToAction("Index");
+                }
             }
-            return View();
+            return RedirectToAction("Create");
         }
 
         // GET: Indisponibilidades/EditarRecurrente
@@ -185,19 +207,38 @@ namespace MVC.Controllers
                     idUsuario = int.Parse(Session["idUsuarioLogueado"].ToString());
                     if (idUsuario != indisponibilidad.Usuario.IdUsuario) return RedirectToAction("Index", "Home");
                 }
+                DateTime fechaI = new DateTime(DateTime.Today.Year,
+                   DateTime.Today.Month,
+                   DateTime.Today.Day,
+                   Int32.Parse(HoraInicio.Substring(0, 2)),
+                   Int32.Parse(HoraInicio.Substring(HoraFin.Length - 2, 2)), 0);
+                DateTime fechaF = new DateTime(DateTime.Today.Year,
+                  DateTime.Today.Month,
+                  DateTime.Today.Day,
+                  Int32.Parse(HoraFin.Substring(0, 2)),
+                  Int32.Parse(HoraFin.Substring(HoraFin.Length - 2, 2)), 0);
                 Usuario usuario = db.DbUsuarios.Find(indisponibilidad.Usuario.IdUsuario);
-                IndisponibilidadRecurrente iR = (IndisponibilidadRecurrente)indisponibilidad;
-                iR.DiaSemana = diaSemana;
-                iR.HoraInicio = HoraInicio;
-                iR.HoraFin = HoraFin;
-                ModificarIndisponibilidadUsuario(usuario, iR);
-                db.Entry(iR).State = EntityState.Modified;
-                db.Entry(usuario).State = EntityState.Modified;
-                db.SaveChanges();
-                if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista"))
-                    return RedirectToAction("IndisponibilidadesUsuario", new { id = idUsuario });
+
+                if (fechaF >= fechaI)
+                {
+                    IndisponibilidadRecurrente iR = (IndisponibilidadRecurrente)indisponibilidad;
+                    iR.DiaSemana = diaSemana;
+                    iR.HoraInicio = HoraInicio;
+                    iR.HoraFin = HoraFin;
+                    ModificarIndisponibilidadUsuario(usuario, iR);
+                    db.Entry(iR).State = EntityState.Modified;
+                    db.Entry(usuario).State = EntityState.Modified;
+                    db.SaveChanges();
+                    if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista"))
+                        return RedirectToAction("IndisponibilidadesUsuario", new { id = idUsuario });
+                    else
+                        return RedirectToAction("Index");
+                    }
                 else
-                    return RedirectToAction("Index");
+                {
+                    ModelState.AddModelError("Edit", "La fecha final debe ser mayor o igual a la inicial.");
+                    return View(usuario);
+                }
             }
             return View();
         }

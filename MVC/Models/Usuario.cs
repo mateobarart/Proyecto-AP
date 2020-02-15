@@ -15,6 +15,8 @@ namespace MVC.Models
         public int IdUsuario { get; set; }
         
         [Required]
+        [StringLength(450)]
+        [Index(IsUnique = true)]
         [DisplayName("Usuario")]
         public string NombreUsuario { get; set; }
 
@@ -29,7 +31,8 @@ namespace MVC.Models
 
         [Required]
         [EmailAddress]
-        //[Index(IsUnique = true)]
+        [StringLength(450)]
+        [Index(IsUnique = true)]
         public string Mail { get; set; }
 
         public int Puntaje { get; set; }

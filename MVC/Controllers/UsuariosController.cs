@@ -95,9 +95,16 @@ namespace MVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.DbUsuarios.Add(usuario);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    try
+                    {
+                        db.DbUsuarios.Add(usuario);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    catch (Exception)
+                    {
+                        ModelState.AddModelError("Create", "No se pudo crear el usuario. El nombre de usuario y el mail deben ser únicos");
+                    }
                 }
             }
             else
@@ -189,10 +196,15 @@ namespace MVC.Controllers
             if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
             if (ModelState.IsValid)
             {
+            try { 
                 db.Entry(usuario).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
+            }catch (Exception)
+            {
+                ModelState.AddModelError("Edit", "No se pudo editar el usuario. El nombre de usuario y el mail deben ser únicos");
             }
+        }
             return View(usuario);
         }
 

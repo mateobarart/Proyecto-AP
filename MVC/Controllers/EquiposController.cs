@@ -68,10 +68,16 @@ namespace MVC.Controllers
                     if (Titular != "") titular = db.DbUsuarios.Find(Int32.Parse(Titular));
                     if (Suplente != "") suplente = db.DbUsuarios.Find(Int32.Parse(Suplente));
                     if (Reserva != "")  reserva = db.DbUsuarios.Find(Int32.Parse(Reserva));
-                    Equipo equipo = new Equipo(NombreEquipo, titular, suplente, reserva);
-                    db.DbEquipos.Add(equipo);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    try { 
+                        Equipo equipo = new Equipo(NombreEquipo, titular, suplente, reserva);
+                        db.DbEquipos.Add(equipo);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }catch (Exception)
+                    {
+                        ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
+                        ModelState.AddModelError("CreateIncorrecto", "No se pudo crear el equipo. El nombre deben ser único");
+                    }
                 }
                 else
                 {
@@ -114,6 +120,7 @@ namespace MVC.Controllers
             {
                 if (!((Titular.Equals(Suplente) && Titular != "") || (Titular.Equals(Reserva) && Titular != "") || (Suplente.Equals(Reserva) && Suplente != "")))
                 {
+                try { 
                     Equipo equipo = db.DbEquipos.Find(Int32.Parse(idEquipo));
                     equipo.NombreEquipo = NombreEquipo;
 
@@ -128,7 +135,13 @@ namespace MVC.Controllers
                     db.Entry(equipo).State = EntityState.Modified;
                     //Thread.Sleep(5000);
                     db.SaveChanges();
-                }else
+                }catch (Exception)
+                {
+                    ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
+                    ModelState.AddModelError("EditIncorrecto", "No se pudo editar el equipo. El nombre deben ser único");
+                }
+            }
+            else
                 {
                     ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
                     ModelState.AddModelError("EditIncorrecto", "Los analistas no pueden ser iguales.");

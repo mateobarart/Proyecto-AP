@@ -4,8 +4,9 @@
     ViewBag.Title = "Crear indisponibilidad";
 }
 
-    <h2 class="text-center">Crear indisponibilidad</h2>
+<h2 class="text-center">Crear indisponibilidad</h2>
 
+@Html.ValidationMessage("Create", "", new { @class = "text-danger" })
 
 <ul class="nav nav-tabs">
     <li class="active">
@@ -15,7 +16,7 @@
         <a id="Unica" class="nav-link" data-toggle="tab" onclick="RenderCrearIndisponibilidad(2)">Única</a>
     </li>
 </ul>
-    
+
 <div class="form-horizontal">
     <hr />
     <span class="text-danger col-md-4">@ViewBag.ErrorIndisponibilidad</span>
@@ -35,7 +36,7 @@
         if (id == 1) {
             $("#divsCrearUnica").modal('hide');
             $("#divsCrearRecurrente").modal('show');
-            
+
         } else if (id == 2) {
             $("#divsCrearRecurrente").modal('hide');
             $("#divsCrearUnica").modal('show');

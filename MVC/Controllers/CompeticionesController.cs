@@ -186,6 +186,11 @@ namespace MVC.Controllers
             {
                 if (nombreCompeticion != "" && temporada != "" && prioridad > 0 && prioridad <= 5)
                 {
+                    List <Competicion> competiciones = db.DbCompeticiones.Where(x => x.NombreCompeticion == nombreCompeticion).Include(c => c.Equipos).ToList();
+                    foreach (Competicion c in competiciones)
+                    {
+                        if(c.Temporada == temporada) return RedirectToAction("Index");
+                    }
                     Competicion competicion = new Competicion(nombreCompeticion, temporada, prioridad);
                     db.DbCompeticiones.Add(competicion);
                     db.SaveChanges();

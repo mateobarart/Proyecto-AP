@@ -226,6 +226,10 @@
     <Compile Include="Migrations\202002140119283_usuariosActivos.Designer.cs">
       <DependentUpon>202002140119283_usuariosActivos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002151817261_clavesUnicas.cs" />
+    <Compile Include="Migrations\202002151817261_clavesUnicas.Designer.cs">
+      <DependentUpon>202002151817261_clavesUnicas.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Competicion.cs" />
@@ -371,6 +375,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002140119283_usuariosActivos.resx">
       <DependentUpon>202002140119283_usuariosActivos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002151817261_clavesUnicas.resx">
+      <DependentUpon>202002151817261_clavesUnicas.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
