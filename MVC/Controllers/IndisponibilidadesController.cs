@@ -61,7 +61,7 @@ namespace MVC.Controllers
             List<IndisponibilidadUnica> iu = new List<IndisponibilidadUnica>();
             foreach (Indisponibilidad i in usuario.Indisponibilidades)
             {
-                if(i.Usuario != null) { 
+                if(i.Usuario != null && i.Usuario.Activo) { 
                     if (i is IndisponibilidadRecurrente)
                     {
                         ir.Add((IndisponibilidadRecurrente)i);
@@ -99,7 +99,7 @@ namespace MVC.Controllers
         public ActionResult Create()
         {
             if (Session["mailUsuarioLogueado"] == null) return RedirectToAction("Login", "Account");
-            ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).ToList();
+            ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
             return View();
         }
 
@@ -166,7 +166,7 @@ namespace MVC.Controllers
                 if (idUsuario != indisponibilidad.Usuario.IdUsuario) return RedirectToAction("Index", "Home");
             }
             IndisponibilidadRecurrente iR = (IndisponibilidadRecurrente)indisponibilidad;
-            ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).ToList();
+            ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
             return View(iR);
         }
 
@@ -190,7 +190,7 @@ namespace MVC.Controllers
                 iR.DiaSemana = diaSemana;
                 iR.HoraInicio = HoraInicio;
                 iR.HoraFin = HoraFin;
-                modificarIndisponibilidadUsuario(usuario, iR);
+                ModificarIndisponibilidadUsuario(usuario, iR);
                 db.Entry(iR).State = EntityState.Modified;
                 db.Entry(usuario).State = EntityState.Modified;
                 db.SaveChanges();
@@ -202,7 +202,7 @@ namespace MVC.Controllers
             return View();
         }
 
-        private void modificarIndisponibilidadUsuario(Usuario usuario, Indisponibilidad ind)
+        private void ModificarIndisponibilidadUsuario(Usuario usuario, Indisponibilidad ind)
         {
             for (int i = 0; i < usuario.Indisponibilidades.Count(); i++)
             {
@@ -232,7 +232,7 @@ namespace MVC.Controllers
                 if (idUsuario != indisponibilidad.Usuario.IdUsuario) return RedirectToAction("Index", "Home");
             }
             IndisponibilidadUnica iU = (IndisponibilidadUnica)indisponibilidad;
-            ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).ToList();
+            ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
             return View(iU);
         }
 
@@ -268,7 +268,7 @@ namespace MVC.Controllers
                     IndisponibilidadUnica iU = (IndisponibilidadUnica)indisponibilidad;
                     iU.FechaInicio = fechaI;
                     iU.FechaFin = fechaF;
-                    modificarIndisponibilidadUsuario(usuario, iU);
+                    ModificarIndisponibilidadUsuario(usuario, iU);
                     db.Entry(iU).State = EntityState.Modified;
                     db.Entry(usuario).State = EntityState.Modified;
                     db.SaveChanges();

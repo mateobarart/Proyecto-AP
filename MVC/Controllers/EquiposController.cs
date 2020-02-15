@@ -46,7 +46,7 @@ namespace MVC.Controllers
         {
             if (Session["mailUsuarioLogueado"] == null) return RedirectToAction("Login", "Account");
             if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
-            ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).ToList();
+            ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
             return View();
         }
 
@@ -75,7 +75,7 @@ namespace MVC.Controllers
                 }
                 else
                 {
-                    ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).ToList();
+                    ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
                     ModelState.AddModelError("CreateIncorrecto", "Los analistas no pueden ser iguales.");
                 }
                 
@@ -97,7 +97,7 @@ namespace MVC.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).ToList();
+            ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
             return View(equipo);
         }
 
@@ -130,7 +130,7 @@ namespace MVC.Controllers
                     db.SaveChanges();
                 }else
                 {
-                    ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).ToList();
+                    ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
                     ModelState.AddModelError("EditIncorrecto", "Los analistas no pueden ser iguales.");
                 }
             }

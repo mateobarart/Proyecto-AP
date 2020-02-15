@@ -47,7 +47,7 @@ namespace MVC.Controllers
             if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
             ViewBag.ListaCompeticiones = db.DbCompeticiones.ToList();
             ViewBag.ListaEquipos = db.DbEquipos.ToList();
-            ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).ToList();
+            ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
             return View();
         }
 
@@ -373,7 +373,7 @@ namespace MVC.Controllers
 
         private void BuscarAnalistasPorRanking(List<Partido> partidos)
         {
-            List<Usuario> ranking = db.DbUsuarios.Where(usu => usu.TipoUsuario == TipoUsuario.Analista).OrderBy(usu => usu.Puntaje).ToList();
+            List<Usuario> ranking = db.DbUsuarios.Where(usu => usu.TipoUsuario == TipoUsuario.Analista).Where(usu => usu.Activo == true).OrderBy(usu => usu.Puntaje).ToList();
             foreach (Partido p in partidos)
             {
                 if (p.AnalistaLocal == null)
@@ -664,7 +664,7 @@ namespace MVC.Controllers
             }
             ViewBag.ListaCompeticiones = db.DbCompeticiones.ToList();
             ViewBag.ListaEquipos = db.DbEquipos.ToList();
-            ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).ToList();
+            ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
             return View(partido);
         }
 

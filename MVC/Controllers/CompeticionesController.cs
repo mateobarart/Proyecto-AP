@@ -20,7 +20,7 @@ namespace MVC.Controllers
             if (Session["mailUsuarioLogueado"] == null) return RedirectToAction("Login", "Account");
             if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
             //var x = db.DbCompeticiones.Select(c => c.NombreCompeticion).Distinct().AsEnumerable().ToList();
-            List<Competicion> competiciones = db.DbCompeticiones.ToList();
+            List<Competicion> competiciones = db.DbCompeticiones.Include(c => c.Equipos).ToList();
             List<Competicion> nuevaLista = new List<Competicion>();
                 for (int i = 0; i < competiciones.Count; i++)
                 {
@@ -132,7 +132,7 @@ namespace MVC.Controllers
             {
                 return HttpNotFound();
             }
-            return View(db.DbCompeticiones.Where(x => x.NombreCompeticion == competicion.NombreCompeticion).ToList());
+            return View(db.DbCompeticiones.Where(x => x.NombreCompeticion == competicion.NombreCompeticion).Include(c => c.Equipos).ToList());
         }
 
         // GET: Competiciones/Create
@@ -298,14 +298,23 @@ namespace MVC.Controllers
         {
             if (Session["mailUsuarioLogueado"] == null) return RedirectToAction("Login", "Account");
             if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
-            Competicion competicion = db.DbCompeticiones.Find(id);
-            List<Competicion> competiciones = db.DbCompeticiones.Where(c => c.NombreCompeticion == competicion.NombreCompeticion).Include(c => c.Equipos).ToList();
-            for (int i = competiciones.Count() - 1; i >= 0; i--)
+            try
             {
-                db.DbCompeticiones.Remove(competiciones[i]);
+                Competicion competicion = db.DbCompeticiones.Find(id);
+                List<Competicion> competiciones = db.DbCompeticiones.Where(c => c.NombreCompeticion == competicion.NombreCompeticion).Include(c => c.Equipos).ToList();
+                for (int i = competiciones.Count() - 1; i >= 0; i--)
+                {
+                    db.DbCompeticiones.Remove(competiciones[i]);
+                }
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            catch (Exception)
+            {
+                ModelState.AddModelError("DeleteIncorrecto", "No se puede eliminar la competición. Tiene equipos asignados.");
+                return View();
+            }
+           
         }
 
         // GET: Competiciones/EliminarEdicion/5
@@ -330,13 +339,21 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EliminarEdicionConfirmed(string IdCompeticion)
         {
-            if (Session["mailUsuarioLogueado"] == null) return RedirectToAction("Login", "Account");
-            if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
-            int idCompeticion = int.Parse(IdCompeticion);
-            Competicion competicion = db.DbCompeticiones.Find(idCompeticion);
-            db.DbCompeticiones.Remove(competicion);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                if (Session["mailUsuarioLogueado"] == null) return RedirectToAction("Login", "Account");
+                if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
+                int idCompeticion = int.Parse(IdCompeticion);
+                Competicion competicion = db.DbCompeticiones.Find(idCompeticion);
+                db.DbCompeticiones.Remove(competicion);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("DeleteIncorrecto", "No se puede eliminar la edición. Tiene equipos asignados.");
+                return RedirectToAction("EliminarEdicion","Competiciones",new { id = IdCompeticion });
+            }
         }
 
         protected override void Dispose(bool disposing)

@@ -11,41 +11,51 @@
 </p>
 @if (Model.Count() > 0)
 { 
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NombreCompeticion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Temporada)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Prioridad)
-            </th>
-            <th></th>
-        </tr>
+<table class="table table-responsive table-striped table-hover" id="myTable">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NombreCompeticion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Temporada)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Prioridad)
+        </th>
+        <th></th>
+    </tr>
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NombreCompeticion)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Temporada)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Prioridad)
-                </td>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreCompeticion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Temporada)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prioridad)
+            </td>
+            @if (item.Equipos.Count() == 0)
+            {
                 <td>
                     @Html.ActionLink("Equipos", "VerEquipos", new { id = item.IdCompeticion }) |
                     @Html.ActionLink("Editar edición", "EditarEdicion", new { id = item.IdCompeticion }) |
                     @Html.ActionLink("Eliminar edición", "EliminarEdicion", new { id = item.IdCompeticion })
                 </td>
-            </tr>
-        }
+            }
+            else
+            {
+                <td>
+                    @Html.ActionLink("Equipos", "VerEquipos", new { id = item.IdCompeticion }) |
+                    @Html.ActionLink("Editar edición", "EditarEdicion", new { id = item.IdCompeticion })
+                </td>
+            }
+        </tr>
+    }
 
-    </table>}
+</table>}
 
 <div>
     @Html.ActionLink("Volver al listado", "Index")

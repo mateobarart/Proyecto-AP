@@ -6,7 +6,8 @@
 
 <h2 class="text-center">Delete</h2>
 
-<h3 class="text-center">¿Está seguro que desea eliminar la competición?</h3>
+<h3 class="text-center">¿Está seguro que desea eliminar la competición?</h3> 
+<h5 class="text-center">Se eliminaran todos los partidos asignados a esta competición</h5>
 <div>
     <hr />
     <dl class="dl-horizontal">
@@ -18,8 +19,10 @@
             @Html.DisplayFor(model => model.NombreCompeticion)
         </dd>
     </dl>
+    @Html.ValidationMessage("DeleteIncorrecto", "", new { @class = "text-danger" })
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
