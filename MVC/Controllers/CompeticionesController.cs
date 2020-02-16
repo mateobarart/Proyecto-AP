@@ -154,6 +154,11 @@ namespace MVC.Controllers
             if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
             if (ModelState.IsValid)
             {
+                List<Competicion> competiciones = db.DbCompeticiones.Where(x => x.NombreCompeticion == NombreCompeticion).ToList();
+                if (competiciones.Count() > 1) {
+                    ModelState.AddModelError("CreateIncorrecto", "No se pudo crear la competición. El nombre debe ser único");
+                    return View();
+                }
                     try
                     {
                         Competicion competicion = new Competicion(NombreCompeticion);
@@ -162,7 +167,7 @@ namespace MVC.Controllers
                     }
                     catch (Exception)
                     {
-                        ModelState.AddModelError("CreateIncorrecto", "No se pudo crear el equipo. El nombre debe ser único");
+                        ModelState.AddModelError("CreateIncorrecto", "No se pudo crear la competición. El nombre debe ser único");
                         return View();
                     }
             }

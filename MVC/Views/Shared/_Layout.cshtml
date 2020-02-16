@@ -24,6 +24,8 @@
                 @if (Session["mailUsuarioLogueado"] != null && Session["tipoUsuarioLogueado"].ToString().Equals("Analista"))
                 {
                 <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Partidos", "Index", "Home")</li>
+
                     <li>
                         @Html.ActionLink(
                        linkText: "Indisponibilidades",

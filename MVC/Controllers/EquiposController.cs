@@ -118,35 +118,34 @@ namespace MVC.Controllers
             if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
             if (ModelState.IsValid)
             {
+                Equipo equipo = db.DbEquipos.Find(Int32.Parse(idEquipo));
                 if (!((Titular.Equals(Suplente) && Titular != "") || (Titular.Equals(Reserva) && Titular != "") || (Suplente.Equals(Reserva) && Suplente != "")))
                 {
-                try { 
-                    Equipo equipo = db.DbEquipos.Find(Int32.Parse(idEquipo));
-                    equipo.NombreEquipo = NombreEquipo;
+                    try { 
+                        equipo.NombreEquipo = NombreEquipo;
 
-                    if (Titular == "")  equipo.Titular = null;
-                    else   equipo.Titular = db.DbUsuarios.Find(Int32.Parse(Titular));
+                        if (Titular == "")  equipo.Titular = null;
+                        else   equipo.Titular = db.DbUsuarios.Find(Int32.Parse(Titular));
 
-                    if (Suplente == "")  equipo.Suplente = null;
-                    else   equipo.Suplente = db.DbUsuarios.Find(Int32.Parse(Suplente));
+                        if (Suplente == "")  equipo.Suplente = null;
+                        else   equipo.Suplente = db.DbUsuarios.Find(Int32.Parse(Suplente));
                     
-                    if (Reserva == "")  equipo.Reserva = null;
-                    else   equipo.Reserva = db.DbUsuarios.Find(Int32.Parse(Reserva));
-                    db.Entry(equipo).State = EntityState.Modified;
-                    //Thread.Sleep(5000);
-                    db.SaveChanges();
-                }catch (Exception)
-                {
-                    ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
-                    ModelState.AddModelError("EditIncorrecto", "No se pudo editar el equipo. El nombre debe ser único");
+                        if (Reserva == "")  equipo.Reserva = null;
+                        else   equipo.Reserva = db.DbUsuarios.Find(Int32.Parse(Reserva));
+                        db.Entry(equipo).State = EntityState.Modified;
+                        //Thread.Sleep(5000);
+                        db.SaveChanges();
+                    }catch (Exception)
+                    {
+                        ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
+                        ModelState.AddModelError("EditIncorrecto", "No se pudo editar el equipo. El nombre debe ser único");
+                    }
+                }else{
+                        ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
+                        ModelState.AddModelError("EditIncorrecto", "Los analistas no pueden ser iguales.");
+                        return View(equipo);
+                    }
                 }
-            }
-            else
-                {
-                    ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
-                    ModelState.AddModelError("EditIncorrecto", "Los analistas no pueden ser iguales.");
-                }
-            }
             return RedirectToAction("Index");
         }
 
