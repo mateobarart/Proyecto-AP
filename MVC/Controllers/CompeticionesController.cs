@@ -154,12 +154,17 @@ namespace MVC.Controllers
             if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
             if (ModelState.IsValid)
             {
-                if(NombreCompeticion != "")
-                {
-                    Competicion competicion = new Competicion(NombreCompeticion);
-                    db.DbCompeticiones.Add(competicion);
-                    db.SaveChanges();
-                }
+                    try
+                    {
+                        Competicion competicion = new Competicion(NombreCompeticion);
+                        db.DbCompeticiones.Add(competicion);
+                        db.SaveChanges();
+                    }
+                    catch (Exception)
+                    {
+                        ModelState.AddModelError("CreateIncorrecto", "No se pudo crear el equipo. El nombre debe ser único");
+                        return View();
+                    }
             }
             return RedirectToAction("Index");
         }

@@ -76,7 +76,7 @@ namespace MVC.Controllers
                     }catch (Exception)
                     {
                         ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
-                        ModelState.AddModelError("CreateIncorrecto", "No se pudo crear el equipo. El nombre deben ser único");
+                        ModelState.AddModelError("CreateIncorrecto", "No se pudo crear el equipo. El nombre debe ser único");
                     }
                 }
                 else
@@ -138,7 +138,7 @@ namespace MVC.Controllers
                 }catch (Exception)
                 {
                     ViewBag.ListaAnalistas = db.DbUsuarios.Where(x => x.TipoUsuario == TipoUsuario.Analista).Where(x => x.Activo == true).ToList();
-                    ModelState.AddModelError("EditIncorrecto", "No se pudo editar el equipo. El nombre deben ser único");
+                    ModelState.AddModelError("EditIncorrecto", "No se pudo editar el equipo. El nombre debe ser único");
                 }
             }
             else
