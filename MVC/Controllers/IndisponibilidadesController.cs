@@ -237,7 +237,7 @@ namespace MVC.Controllers
                 else
                 {
                     ModelState.AddModelError("Edit", "La fecha final debe ser mayor o igual a la inicial.");
-                    return View(usuario);
+                    return View(indisponibilidad);
                 }
             }
             return View();
@@ -319,8 +319,8 @@ namespace MVC.Controllers
                 }
                 else
                 {
-                    ViewBag.ErrorIndisponibilidad = "La fecha fin debe ser mayor a la fecha inicio.";
-                    return RedirectToAction("Create");
+                    ModelState.AddModelError("Edit", "La fecha final debe ser mayor o igual a la inicial.");
+                    return View(indisponibilidad);
                 }
             }
             return RedirectToAction("Index");
