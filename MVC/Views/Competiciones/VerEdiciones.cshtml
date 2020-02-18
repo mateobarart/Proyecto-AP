@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<MVC.Models.Competicion>
 
 @{
-    ViewBag.Title = "Competiciones";
+    ViewBag.Title = "Ediciones";
 }
 
-<h2 class="text-center">Competiciones</h2>
+<h2 class="text-center">Ediciones</h2>
 
 <p class="btn btn-default">
     @Html.ActionLink("Crear edición", "CrearEdicion", new { id = Model.ToList()[0].IdCompeticion })

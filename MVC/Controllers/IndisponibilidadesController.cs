@@ -410,7 +410,6 @@ namespace MVC.Controllers
         public ActionResult Delete(int? id)
         {
             if (Session["mailUsuarioLogueado"] == null) return RedirectToAction("Login", "Account");
-            if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

@@ -193,7 +193,6 @@ namespace MVC.Controllers
         public ActionResult Edit([Bind(Include = "IdUsuario,NombreUsuario,Password,TipoUsuario,Mail,Puntaje")] Usuario usuario)
         {
             if (Session["mailUsuarioLogueado"] == null) return RedirectToAction("Login", "Account");
-            if (Session["tipoUsuarioLogueado"].ToString().Equals("Analista")) return RedirectToAction("Index", "Home");
             if (ModelState.IsValid)
             {
             try { 
